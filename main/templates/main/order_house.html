@@ -1,0 +1,399 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-10">
+                Будинки
+                <br><br><br><br>
+            </div>
+
+            <div class="col-2"></div>
+
+        </div>
+    </div>
+</section>
+
+<!-- <h1>Замовлення будинку {{info.id}} - {{info.name}}</h1> -->
+
+<section>
+    <div class="container">
+        <div class="row">
+
+            <!-- Ліва кол (форма) -->
+            <div class="col-sm-7 col-md-9">
+
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="">Замовлення</h2>
+                    </div>
+                </div>
+                 
+                <!-- Форма -->
+                <div class="row">
+                    <div class="col-12">
+
+                        <!-- Форма -->
+                        <form action="{% url 'order_house' info.id %}" method="post" id="main_form">
+                            {% csrf_token %}
+
+                            <div class="form-error">{{ form.non_field_errors }}</div>
+
+                            <div class="form-row">
+                                <!-- first_name -->
+                                <div class="form-group col-md-6">
+                                    <label for="{{form.last_name.id_for_label}}">{{form.last_name.label}}</label>
+                                    {{form.last_name}}
+                                </div>
+                                <!-- last_name -->
+                                <div class="form-group col-md-6">
+                                    <label for="{{form.first_name.id_for_label}}">{{form.first_name.label}}</label>
+                                    {{form.first_name}}
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <!-- email -->
+                                <div class="form-group col-md-6">
+                                    <label for="{{form.email.id_for_label}}">{{form.email.label}}</label>
+                                    {{form.email}}
+                                </div>
+                                <!-- phone -->
+                                <div class="form-group col-md-6">
+                                    <label for="{{form.phone.id_for_label}}">{{form.phone.label}}</label>
+                                    {{form.phone}}
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <!-- date_future_settlment -->
+                                <div class="form-group col-md-4">
+                                    <label for="{{form.date_future_settlment.id_for_label}}">{{form.date_future_settlment.label}}</label>
+                                    <input type="date" name="{{form.date_future_settlment.name}}" required="" id="{{form.date_future_settlment.id_for_label}}" 
+                                    class="form-control" value="2002-04-02">
+                                </div>
+                                <!-- count_of_days -->
+                                <div class="form-group col-md-2">
+                                    <label for="{{form.count_of_days.id_for_label}}">{{form.count_of_days.label}}</label>
+                                    <input type="number" id="{{form.count_of_days.id_for_label}}" name="{{form.count_of_days.name}}" 
+                                    min="1" max="5" value="1" class="form-control">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="quantity_days_btn"></label><br>
+                                    <button type="button" class="" id="quantity_days_btn" onclick="calc_price_sum()">Розрахувати</button>
+                                </div>
+                                <!-- date_future_checkout -->
+                                <div class="form-group col-md-4">
+                                    <label for="{{form.date_future_checkout.id_for_label}}">{{form.date_future_checkout.label}}</label>
+                                    <input disabled type="date" name="{{form.date_future_checkout.name}}" required="" id="{{form.date_future_checkout.id_for_label}}" 
+                                    class="form-control" value="">
+                                </div>
+                            </div>
+
+                            <script>
+                                function date2iso(d){
+                                    var dd = d.getDate();
+                                    var mm = d.getMonth()+1;    // January == 0
+                                    var yyyy = d.getFullYear();
+                                    if(dd<10){dd='0'+dd}
+                                    if(mm<10){mm='0'+mm}
+                                    var date = yyyy+'-'+mm+'-'+dd;
+                                    return date;
+                                }
+                                function iso2date(df){
+                                    var d = new Date(df.split('-'));
+                                    return d;
+                                }
+                                function today(){
+                                    var today = new Date();
+                                    return today;
+                                }
+                                document.getElementById('{{form.date_future_settlment.id_for_label}}').value = date2iso(today());
+                                function calc_days(){
+                                    var date_future_settlment = document.getElementById('{{form.date_future_settlment.id_for_label}}').value;
+                                    var quantity_days = document.getElementById('{{form.count_of_days.id_for_label}}').value;
+                                    var date_future_checkout = document.getElementById('{{form.date_future_checkout.id_for_label}}').value;
+                                    date_future_checkout = new Date(iso2date(date_future_settlment).getTime() + quantity_days*24*60*60*1000);
+                                    document.getElementById('{{form.date_future_checkout.id_for_label}}').value = date2iso(date_future_checkout);
+                                }
+                                calc_days();
+                            </script>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="{{form.house.id_for_label}}">{{form.house.label}}</label>
+                                    <select name="{{form.house.name}}" id="{{form.house.id_for_label}}" class="form-control">
+                                        {% for i in infos %}
+                                        <option {% if i.id == info.id %}selected{% endif %} value="{{i.id}}">{{i.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- <button type="submit" class="btn btn-primary">Забронювати</button> -->
+
+                            <script>
+                                var forms = document.getElementById('main_form').getElementsByTagName('input');
+                                for (let i of forms) {
+                                    i.classList.add('form-control');
+                                }
+                                var forms2 = document.getElementById('main_form').getElementsByTagName('select');
+                                for (let i of forms2) {
+                                    i.classList.add('form-control');
+                                }
+                            </script>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Права кол (Прев'ю) -->
+            <div class="col-sm-5 col-md-3">
+                    <div class="card box-shadow border border-success">
+
+                        <a href="{{ info.get_absolute_url }}">
+                            <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Photo preview: {{c.photo_preview}}" style="height: 225px; width: 100%; display: block;" 
+                            src="/static/main/img/houses/{{info.photo}}" data-holder-rendered="true">
+                        </a>
+
+                        <div class="card-body">
+                            <div class="title-group d-flex">
+                                <h4 class="card-title pricing-card-title">{{info.name}}</h3>
+                            </div>
+                            <h3 class="pricing-card-title">₴ <span id="price_sum">{{info.price|floatformat:0}}</span></h4>
+                        </div>
+
+                    </div>
+
+                    <div class="card box-shadow">
+                        <button form="main_form" type="submit" name="send_other" class="btn btn-primary">Забронювати</button>
+                    </div>
+
+                    <div class="d-none" id="price_for_1_day">{{info.price|floatformat:0}}</div>
+                    <script>
+                        function calc_price_sum(){
+                            // var price_sum = document.getElementById('price_sum').innerText;
+                            var price_sum = document.getElementById('price_for_1_day').innerText;
+                            // var price_sum = {{info.price|floatformat:0}};
+                            var quantity_days = document.getElementById('{{form.count_of_days.id_for_label}}').value;
+                            document.getElementById('price_sum').innerText = parseInt(price_sum)*quantity_days;
+                            calc_days();
+                        }
+                        calc_price_sum()
+                    </script>
+
+                    <div class="card box-shadow">
+                        <a href="{{ c.get_absolute_url }}" class="btn btn-secondary" role="button">Оновити</a>
+                    </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<hr>
+
+<!-- Календар -->
+<section>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-6">
+                <h4>Січень 2022</h4>
+                <table>
+                    <thead>
+                        <!-- <tr>
+                            <th>Пн</th>
+                            <th>Вт</th>
+                            <th>Ср</th>
+                            <th>Чт</th>
+                            <th>Пт</th>
+                            <th>Сб</th>
+                            <th>Нд</th>
+                        </tr> -->
+                    </thead>
+                    <tbody>
+                        {% for j in 31|get_range %}
+
+                            {% if  forloop.counter == 1 %}<tr>{% endif %}
+                            {% if  forloop.counter == 8 %}<tr>{% endif %}
+                            {% if  forloop.counter == 15 %}<tr>{% endif %}
+                            {% if  forloop.counter == 22 %}<tr>{% endif %}
+                            {% if  forloop.counter == 29 %}<tr>{% endif %}
+                            
+                            <td>
+                                <span class="calendar_cell" id="2022-01-{% if forloop.counter < 10 %}0{{forloop.counter}}{% else %}{{forloop.counter}}{% endif %}">
+                                    {% if forloop.counter < 10 %}&nbsp&nbsp{{forloop.counter}}{% else %}{{forloop.counter}}{% endif %}
+                                </span>
+                            </td>
+
+                            {% if  forloop.counter == 7 %}</tr>{% endif %}
+                            {% if  forloop.counter == 14 %}</tr>{% endif %}
+                            {% if  forloop.counter == 21 %}</tr>{% endif %}
+                            {% if  forloop.counter == 28 %}</tr>{% endif %}
+                            {% if  forloop.counter == 31 %}</tr>{% endif %}
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-6">
+                <h4>Лютий 2022</h4>
+                <table>
+                    <thead>
+                        <!-- <tr>
+                            <th>Пн</th>
+                            <th>Вт</th>
+                            <th>Ср</th>
+                            <th>Чт</th>
+                            <th>Пт</th>
+                            <th>Сб</th>
+                            <th>Нд</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for jо in 28|get_range %}
+
+                            {% if  forloop.counter == 1 %}<tr>{% endif %}
+                            {% if  forloop.counter == 8 %}<tr>{% endif %}
+                            {% if  forloop.counter == 15 %}<tr>{% endif %}
+                            {% if  forloop.counter == 22 %}<tr>{% endif %}
+                            {% if  forloop.counter == 29 %}<tr>{% endif %}
+                            
+                            <td>
+                                <span class="calendar_cell" id="2022-02-{% if forloop.counter < 10 %}0{{forloop.counter}}{% else %}{{forloop.counter}}{% endif %}">
+                                    {% if forloop.counter < 10 %}&nbsp&nbsp{{forloop.counter}}{% else %}{{forloop.counter}}{% endif %}
+                                </span>
+                            </td>
+
+                            {% if  forloop.counter == 7 %}</tr>{% endif %}
+                            {% if  forloop.counter == 14 %}</tr>{% endif %}
+                            {% if  forloop.counter == 21 %}</tr>{% endif %}
+                            {% if  forloop.counter == 28 %}</tr>{% endif %}
+                            {% if  forloop.counter == 31 %}</tr>{% endif %}
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<hr>
+
+<!-- лишній календар -->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <h3>Листопад 2021</h3>
+                {% for j in 30|get_range %}
+
+                    {% if  forloop.counter == 1 %}<div class="row">{% endif %}
+                    {% if  forloop.counter == 8 %}<div class="row">{% endif %}
+                    {% if  forloop.counter == 15 %}<div class="row">{% endif %}
+                    {% if  forloop.counter == 22 %}<div class="row">{% endif %}
+                    {% if  forloop.counter == 29 %}<div class="row">{% endif %}
+                    
+                    <!-- <div class="col-1">
+                        <div class="card calendar_cell" id="2021-11-{% if forloop.counter < 10 %}0{{forloop.counter}}{% else %}{{forloop.counter}}{% endif %}">
+                            <p>{% if forloop.counter < 10 %}0{{forloop.counter}}{% else %}{{forloop.counter}}{% endif %}</p>
+                        </div>
+                    </div> -->
+
+                    <div class="col-1">
+                        <span class="card calendar_cell" id="2021-11-{% if forloop.counter < 10 %}0{{forloop.counter}}{% else %}{{forloop.counter}}{% endif %}">
+                            {% if forloop.counter < 10 %}0{{forloop.counter}}{% else %}{{forloop.counter}}{% endif %}
+                        </span>
+                    </div>
+
+                    {% if  forloop.counter == 7 %}</div>{% endif %}
+                    {% if  forloop.counter == 14 %}</div>{% endif %}
+                    {% if  forloop.counter == 21 %}</div>{% endif %}
+                    {% if  forloop.counter == 28 %}</div>{% endif %}
+                    {% if  forloop.counter == 30 %}</div>{% endif %}
+
+                {% endfor %}
+            </div>
+
+            <div class="col-6">
+                <h3>Грудень 2021</h3>
+                {% for jj in 31|get_range %}
+
+                    {% if  forloop.counter == 1 %}<div class="row">{% endif %}
+                    {% if  forloop.counter == 8 %}<div class="row">{% endif %}
+                    {% if  forloop.counter == 15 %}<div class="row">{% endif %}
+                    {% if  forloop.counter == 22 %}<div class="row">{% endif %}
+                    {% if  forloop.counter == 29 %}<div class="row">{% endif %}
+                    
+                    <!-- <div class="col-1">
+                        <div class="card calendar_cell" id="2021-12-{% if forloop.counter < 10 %}0{{forloop.counter}}{% else %}{{forloop.counter}}{% endif %}">
+                            <p>{% if forloop.counter < 10 %}0{{forloop.counter}}{% else %}{{forloop.counter}}{% endif %}</p>
+                        </div>
+                    </div> -->
+
+                    <div class="col-1">
+                        <span class="card calendar_cell" id="2021-12-{% if forloop.counter < 10 %}0{{forloop.counter}}{% else %}{{forloop.counter}}{% endif %}">
+                            {% if forloop.counter < 10 %}0{{forloop.counter}}{% else %}{{forloop.counter}}{% endif %}
+                        </span>
+                    </div>
+
+
+                    {% if  forloop.counter == 7 %}</div>{% endif %}
+                    {% if  forloop.counter == 14 %}</div>{% endif %}
+                    {% if  forloop.counter == 21 %}</div>{% endif %}
+                    {% if  forloop.counter == 28 %}</div>{% endif %}
+                    {% if  forloop.counter == 31 %}</div>{% endif %}
+
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="row">
+                <div class="">
+                    <ul id="book_dates">
+                    {% for bd in book_dates %}
+                        {% for d in bd %}
+                            <li id="li-{{d|date:'Y-m-d'}}">{{d|date:'Y-m-d'}}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <script>            
+            var cells = document.getElementsByClassName('calendar_cell');
+            for (var i = 0; i < cells.length; i++) {
+                cells[i].style.backgroundColor = 'green';
+            }
+
+            var ul = document.getElementById("book_dates");
+            var items = ul.getElementsByTagName("li");
+            for (var i = 0; i < items.length; i++) {
+                var d = document.getElementById("li-" + items[i].innerText).innerText;
+                console.log(d);
+                cal_cel = document.getElementById(d);
+                cal_cel.style.backgroundColor = "red";
+            }
+        </script>
+
+    </div>
+</section>
+
+{% endblock %}
