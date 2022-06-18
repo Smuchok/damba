@@ -1,0 +1,88 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <section>
+        <div class="container">
+            <div class="row">
+
+                <div class="col-10">
+                    Будинки
+                    <br><br><br><br>
+                </div>
+
+                <div class="col-2">
+                    {% if success %}
+                    <p>{{success}}</p>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container">
+            <div class="row">
+
+                {% for c in page_obj %}
+                <div class="col-sm-6 col-md-6 col-lg-3">
+                    <div class="card box-shadow">
+                        <a href="{{ c.get_absolute_url }}">
+                            <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Photo preview: {{c.photo_preview}}" style="height: 225px; width: 100%; display: block;" 
+                            src="/static/main/img/houses/{{c.photo}}" data-holder-rendered="true">
+                        </a>
+                        <div class="card-body">
+                            <div class="title-group d-flex">
+                                <h3 class="card-title pricing-card-title">{{c.name}}</h3>
+                            </div>
+                            <h4 class="pricing-card-title">₴ {{c.price|floatformat:0}}</h4>
+
+                            <p>Місць: {{c.capacity}}</p>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group flex-wrap" data-toggle="buttons">
+                                    <a href="{{ c.get_absolute_url }}order/"><button type="button" class="btn btn-sm btn-outline-primary">Замовити</button></a>
+                                    <a href="{{ c.get_absolute_url }}"><button type="button" class="btn btn-sm btn-outline-secondary">Більше</button></a>
+                                </div>
+                                <small class="text-muted">{{c.id}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Пагінація -->
+        <div class="container">
+            <div class="row">
+                <nav aria-label="...">
+                    <ul class="pagination d-flex justify-content-center">
+                        <!-- <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.previous_page_number}}"><h4>Назад</h4></a></li> -->
+
+                        {% for page in page_obj.paginator.page_range %}
+                        <li class="page-item 
+                            {% if page == page_obj.number %}
+                            active" aria-current="page"
+                            {% else %}
+                            "
+                            {% endif %}
+                        ><a class="page-link" href="?page={{page}}"><h4>{{page}}</h4></a></li>
+                        {% endfor %}
+                        
+                        <!-- <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.next_page_number}}"><h4>Далі</h4></a></li> -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </section>
+
+
+{% endblock %}

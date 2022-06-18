@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+    
+<br><br><br><br>
+<section>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-10">
+                <!-- <h1>{{ title }}</h1> -->
+            </div>
+            <div class="col-2"></div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="font-weight-bold">Як доїхати автомобілем</h3>
+                <p>Дорогою М10 у напрямку зі Львова до Яворова, після населеного пункту Терновиця, не доїжджаючи до Яворова повернути ліворуч на дорогу Р40. Через 500 м повернути праворуч. Дальше - через населені пункти Черчик, Рогізно та Оселя.</p>
+                <p>Дорогою М11 у напрямку зі Львова до Мостиська, у населеному пункті Берегове повернути праворуч у напрямку села Хоросниця. Дальше - Хоросниця та Оселя.</p>
+            </div>
+            <div class="col-md-6">
+                <h3 class="font-weight-bold">Як доїхати громадським транспортом</h3>
+                <p>Автобусом Львів-Оселя. Відправка у Львові з АС-4 (вул. Шевченка 105, Янівський цвинтар)</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11890.389738408232!2d23.332401554260752!3d49.84449160874492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb9d903bcdad12c0d!2z0JHQsNC30LAt0JLRltC00L_QvtGH0LjQvdC60YMg0K_QstC-0YDRltCy0YHRjNC60LjQuS3QktGW0LTQv9C-0YfQuNC90L7Qug!5e0!3m2!1suk!2sua!4v1641786334724!5m2!1suk!2sua" 
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-record-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    </svg>
+                    GPS координати
+                </div>
+                <a target="_blank" href="https://www.google.com/maps/place/%D0%91%D0%B0%D0%B7%D0%B0-%D0%92%D1%96%D0%B4%D0%BF%D0%BE%D1%87%D0%B8%D0%BD%D0%BA%D1%83+%D0%AF%D0%B2%D0%BE%D1%80%D1%96%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9-%D0%92%D1%96%D0%B4%D0%BF%D0%BE%D1%87%D0%B8%D0%BD%D0%BE%D0%BA/@49.8503772,23.327263,17z/data=!4m12!1m6!3m5!1s0x473b1300d304e10b:0xb9d903bcdad12c0d!2z0JHQsNC30LAt0JLRltC00L_QvtGH0LjQvdC60YMg0K_QstC-0YDRltCy0YHRjNC60LjQuS3QktGW0LTQv9C-0YfQuNC90L7Qug!8m2!3d49.8503738!4d23.3294517!3m4!1s0x473b1300d304e10b:0xb9d903bcdad12c0d!8m2!3d49.8503738!4d23.3294517">
+                    49.849635, 23.329632
+                </a>
+            </div>
+            <div class="col-md-6">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+                        <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                    </svg>
+                    Телефон
+                </div>
+                <a href="tel:+38(067)000000">(067) 000 0000</a>
+            </div>
+        </div>
+    </div>
+</section>
+<br><br>
+{% endblock %}
